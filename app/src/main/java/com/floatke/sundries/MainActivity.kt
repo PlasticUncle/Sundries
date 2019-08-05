@@ -24,8 +24,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.nav_header_main.view.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,10 +44,21 @@ class MainActivity : AppCompatActivity() {
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
 
+
         val host = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment?
             ?: return
 
         nav_view.setupWithNavController(host.navController)
+
+        val option = RequestOptions.circleCropTransform()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+
+        val imageView = nav_view.getHeaderView(0).portrait_view
+        Glide.with(this)
+            .load(R.mipmap.ic_portrait)
+            .apply(option)
+            .into(imageView)
     }
 
     override fun onBackPressed() {
