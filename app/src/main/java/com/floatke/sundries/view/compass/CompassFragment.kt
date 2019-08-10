@@ -26,11 +26,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.floatke.sundries.BuildConfig
 import com.floatke.sundries.R
 import com.floatke.sundries.extensions.allPermissionGranted
+import com.floatke.sundries.viewmodel.DirectionViewModel
 import com.floatke.sundries.viewmodel.LocationViewFactory
 import com.floatke.sundries.viewmodel.LocationViewModel
+import kotlinx.android.synthetic.main.fragment_compass.*
 
 private val REQUEST_PERMISSIONS = arrayOf(
     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -42,15 +46,31 @@ private const val REQUEST_PERMISSION_CODE = 10
 
 private const val TAG = "CompassFragment"
 
+
+//TODO broken device sensor?
 class CompassFragment : Fragment() {
 
     private lateinit var locationViewModel: LocationViewModel
+    private lateinit var directionViewModel: DirectionViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_compass, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        debug_info.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        directionViewModel = ViewModelProviders.of(this).get(DirectionViewModel::class.java)
+        directionViewModel.degree.observe(this, Observer {
+            debug_info.text = "$it"
+        })
     }
 
     override fun onResume() {
