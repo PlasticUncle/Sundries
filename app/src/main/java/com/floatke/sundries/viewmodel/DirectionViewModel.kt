@@ -1,5 +1,5 @@
 /*
- * Copyright [2019] floatke@outlook.com
+ * Copyright [2019] xiongke.wang@outlook.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,8 +69,7 @@ class DirectionViewModel(application: Application) : AndroidViewModel(applicatio
         if (SensorManager.getRotationMatrix(r, null, gravity, geomagnetic)) {
             val values = FloatArray(3)
             SensorManager.getOrientation(r, values)
-            var azimuth = Math.toDegrees(values[0].toDouble())
-            if (azimuth < 0) azimuth += 360.0
+            val azimuth = (360f + Math.toDegrees(values[0].toDouble()))% 360
             LogUtil.d(TAG, "degree : ${values.asList()}   $azimuth")
             degree.value = azimuth
         }

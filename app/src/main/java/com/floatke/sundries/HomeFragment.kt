@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 floatke@outlook.com
+ * Copyright 2019 xiongke.wang@outlook.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.floatke.sundries.util.LogUtil
 
 class HomeFragment : Fragment() {
 
@@ -29,5 +30,10 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        LogUtil.d("lifecycle", "create", Throwable("here"))
     }
 }
